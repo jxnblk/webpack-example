@@ -1,6 +1,12 @@
+require('webpack-serve-overlay')
+
 const ctx = require.context('.', true, /\.examples\.js$/)
 
 const data = ctx.keys().map(key => ctx(key))
+
+const root = document.body.appendChild(
+  document.createElement('div')
+)
 
 const render = (data) => {
   console.log('render', data)
@@ -10,9 +16,9 @@ const render = (data) => {
 render(data)
 
 if (module.hot && module.hot.accept) {
-  module.hot.accept(ctx.id, () => {
-    const next = require.context('.', true, /\.examples\.js$/)
-    const nextData = next.keys().map(key => next(key))
-    render(nextData)
-  })
+  module.hot.accept()
+}
+
+export default () => {
+  render(data)
 }
